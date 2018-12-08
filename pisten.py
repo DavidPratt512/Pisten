@@ -53,6 +53,15 @@ def listen(**kwargs):
 
 
 def forward(data, ip, port):
+    """
+    Forwards the data to the specified IP address.
+
+    Args:
+        data (bytes): data from payload of the magic packet
+        ip (str): target ip address
+        port (int): target port number
+
+    """
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     s.connect((ip, port))
@@ -92,7 +101,6 @@ def main(argv=None):
             'to (default 255.255.255.255).'
     )
     args = parser.parse_args(argv)
-    print(args)
     listen(listen_port=args.L,
             target_port=args.F,
             target_ip=args.I)
@@ -100,3 +108,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main()
+
