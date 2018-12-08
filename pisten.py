@@ -7,11 +7,10 @@ DEFAULT_TARGET_PORT = 9
 DEFAULT_TARGET_IP = '255.255.255.255'
 
 
-def extract_mac(data):
+def is_magic_packet(data):
     """
-    Checks if a packet is a magic packet, then returns 
-    the corresponding MAC address. Returns None if 
-    data is not from a magic packet.
+    Checks if a packet is a magic packet, returns
+    True or False.
 
     Args:
         data (bytes): the payload from a packet
@@ -27,10 +26,9 @@ def extract_mac(data):
         if prolog == 'f'*12:
             # the mac address follows (next 12 chars)
             mac = data[12:24]
-            if data == prolog + mac*16:
-                return mac
+            return data == prolog + mac*16
     except:
-        return None
+        return False
 
 
 def listen(**kwargs):
@@ -50,8 +48,16 @@ def listen(**kwargs):
     s.bind(('', listen_port))
     while True:
         data, _ = s.recvfrom(1024)
-        if extract_mac(data):
-            forward(data, (target_ip, target_port))
+        if is_magic_packet(data):
+            forward(data, target_ip, target_port)
+
+
+def forward(data, ip, port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    s.connect((ip, port))
+    s.send(data)
+    s.close()
 
 
 def main(argv=None):
