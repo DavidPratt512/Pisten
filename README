@@ -1,0 +1,3 @@
+Pisten is a simple UDP port listener that will forward wake on lan packets to the broadcast IP address.
+
+Using a program to forward to the broadcast IP address is much safer than configuring your router to automatically forward anything to the broadcast IP. Also, some routers do not allow port forwarding to the broadcast IP.
