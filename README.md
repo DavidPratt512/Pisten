@@ -24,7 +24,7 @@ Alternatively, you could use the `listen` function in your own Python script.
 ```python
 from pisten import listen
 
-listen(listen_port=3141, target_port=0)
+listen(listen_port=3141, target_port=0, target_ip='127.127.127.127')
 ```
 
 
