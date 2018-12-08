@@ -1,9 +1,21 @@
 import argparse
-import re
 import socket
 
 
-def is_magic_packet(data):
+DEFAULT_PORT = 9
+DEFAULT_MACS = [None]
+
+
+def extract_mac(data):
+    """
+    Checks if a packet is a magic packet, then returns 
+    the corresponding MAC address. Returns None if 
+    data is not from a magic packet.
+
+    Args:
+        data (bytes): the payload from a packet
+
+    """
     try:
         # convert data to lowercase hex string
         data = data.hex().lower()
@@ -14,11 +26,27 @@ def is_magic_packet(data):
         if prolog == 'f'*12:
             # the mac address follows (next 12 chars)
             mac = data[12:24]
-            return data == prolog + mac*16
-        else:
-            return False
+            if data == prolog + mac*16:
+                return mac
     except:
-        return False
+        return None
+
+
+def listen(**kwargs):
+    port = kwargs.pop('port', DEFAULT_PORT)
+    macs = kwargs.pop('macs', DEFAULT_MACS)
+    for kw in kwargs:
+        raise TypeError('Unexpected keyword argument: {!r}'.format(kw))
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.bind(('', port))
+    while True:
+        data, _ = s.recvfrom(1024)
+        mac = extract_mac(data)
+        if mac not in macs:
+            #forward(data)
+            pass
+
 
 
 
@@ -28,7 +56,7 @@ def main(argv=None):
     )
     parser.add_argument('-p',
             metavar='port',
-            default=9,
+            default=DEFAULT_PORT,
             dest='port',
             nargs=1,
             type=int,
@@ -36,14 +64,16 @@ def main(argv=None):
     )
     parser.add_argument('-m',
             metavar='macs',
+            default=DEFAULT_MACS,
             nargs='+',
             dest='macs',
-            help='A list of MAC addresses you want to exclusively listen for. '
-            'By default, forward all wake-on-lan packets.'
+            help='A list of MAC addresses that you do not wish to wake. '
+            'By default, all wake-on-lan packets will be broadcasted.'
     )
     args = parser.parse_args(argv)
     print(args)
-    #TODO: pass port/macs to functions
+    listen(macs=args.macs, port=args.port)
+
 
 if __name__ == '__main__':
     main()
