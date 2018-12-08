@@ -3,6 +3,16 @@ import re
 import socket
 
 
+def is_magic_packet(data):
+    try:
+        data = data.hex()
+        prolog = data[:12]
+        mac = data[12:24]
+        return data == prolog + mac*16
+    except:
+        return False
+
+
 
 
 def main(argv=None):
@@ -19,7 +29,9 @@ def main(argv=None):
     parser.add_argument('-m',
             metavar='macs',
             dest='macs',
-            help='A list of MAC addresses you want to exclusively listen for. Can be a file containing MAC addresses or a list in the command line. By default, forward all wake-on-lan packets.'
+            help='A list of MAC addresses you want to exclusively listen for. '
+            'Can be a file containing MAC addresses or a list in the command line. '
+            'By default, forward all wake-on-lan packets.'
     )
     args = parser.parse_args(argv)
     #TODO: pass port/macs to functions
