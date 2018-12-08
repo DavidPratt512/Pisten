@@ -5,10 +5,11 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
         name='pisten',
-        version='0.1.1',
+        version='0.1.2',
         author='David Pratt',
         author_email='davidpratt512@gmail.com',
         description='A simple magic packet forwarder',
+        py_modules=['pisten'],
         license='MIT',
         long_description=readme,
         long_description_content_type='text/markdown',
