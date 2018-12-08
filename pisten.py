@@ -16,18 +16,19 @@ def is_magic_packet(data):
         data (bytes): the payload from a packet
 
     """
-    try:
-        # convert data to lowercase hex string
-        data = data.hex().lower()
+    # convert data to lowercase hex string
+    data = data.hex().lower()
         
-        # magic packets begin with 'f'*12
-        prolog = data[:12]
+    # magic packets begin with 'f'*12
+    prolog = data[:12]
 
-        if prolog == 'f'*12:
-            # the mac address follows (next 12 chars)
-            mac = data[12:24]
-            return data == prolog + mac*16
-    except:
+    if prolog == 'f'*12:
+        # the mac address follows (next 12 chars)
+        mac = data[12:24]
+
+        # the mac address is repeated 16 times
+        return data == prolog + mac*16
+    else:
         return False
 
 
