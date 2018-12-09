@@ -79,7 +79,6 @@ def main(argv=None):
             metavar='listen port',
             default=DEFAULT_LISTEN_PORT,
             dest='L',
-            nargs=1,
             type=int,
             help='The UDP port number you want to listen to '
             '(default 1729).'
@@ -88,7 +87,6 @@ def main(argv=None):
             metavar='forward port',
             default=DEFAULT_TARGET_PORT,
             dest='F',
-            nargs=1,
             type=int,
             help='The UDP port number you want to forward WOL '
             'packets to (default 9).'
@@ -97,7 +95,6 @@ def main(argv=None):
             metavar='forward IP',
             default=DEFAULT_TARGET_IP,
             dest='I',
-            nargs=1,
             help='The IP address you want to forward WOL packets '
             'to (default 255.255.255.255).'
     )
