@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
         name='pisten',
-        version='0.1.2',
+        version='0.2.0',
         author='David Pratt',
         author_email='davidpratt512@gmail.com',
         description='A simple magic packet forwarder',
