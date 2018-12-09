@@ -26,7 +26,7 @@ setuptools.setup(
             'Operating System :: OS Independent'
             ],
         entry_points={
-            'console_scripts': ['pisten = pisten:main']
+            'console_scripts': ['pisten = pisten.pisten:main']
         }
 )
 
